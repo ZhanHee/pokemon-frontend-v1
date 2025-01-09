@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails Pokémon</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+            color: #333;
+        }
+
+        h1 {
+            color: #ff0000;
+            margin: 20px 0;
+        }
+
+        .pokemon-details {
+            margin: 20px auto;
+            width: 300px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .pokemon-details img {
+            width: 150px;
+            height: 150px;
+        }
+
+        .pokemon-name {
+            font-size: 20px;
+            margin: 10px 0;
+        }
+
+        .pokemon-type {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #ff0000;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .back-button:hover {
+            background-color: #cc0000;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Détails du Pokémon</h1>
+    <div class="pokemon-details" id="pokemonDetails">
+        <!-- Les détails du Pokémon seront affichés ici -->
+    </div>
+
+    <a href="/" class="back-button">Retour au Pokédex</a>
+
+    <script>
+    const pathParts = window.location.pathname.split('/');
+    const pokemonName = pathParts[pathParts.length - 1]; 
+
+    const detailsDiv = document.getElementById('pokemonDetails');
+
+    if (pokemonName) {
+        fetch(`api/pokemons/${pokemonName}`)
+            .then(response => {
+                if (response.ok) {
+                    return response.json(); 
+                } else {
+                    throw new Error(pokemonName + ' not found'); 
+                }
+            })
+            .then(pokemon => {
+                detailsDiv.innerHTML = `
+                    <img src="${pokemon.image_url}" alt="${pokemon.name}">
+                    <div class="pokemon-name">#${String(pokemon.id).padStart(3, '0')} ${pokemon.name}</div>
+                    <div class="pokemon-type">Type: ${pokemon.types}</div>
+                `;
+            })
+            .catch(error => {
+                
+                detailsDiv.innerHTML = `<p>${error.message}</p>`;
+            });
+    } else {
+        detailsDiv.innerHTML = "<p>Nom du Pokémon manquant.</p>";
+    }
+    </script>
+
+</body>
+</html>

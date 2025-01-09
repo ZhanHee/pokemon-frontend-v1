@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokédex</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+            color: #ff0000;
+        }
+
+        .pokedex {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .pokemon-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 180px;
+            text-align: center;
+            padding: 10px;
+            transition: transform 0.2s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .pokemon-card:hover {
+            transform: scale(1.05);
+        }
+
+        .pokemon-card img {
+            width: 100px;
+            height: 100px;
+            margin: 10px 0;
+        }
+
+        .pokemon-info {
+            font-size: 16px;
+        }
+
+        .pokemon-type {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pokédex</h1>
+
+    <div class="pokedex" id="pokedex">
+        <!-- Les cartes des Pokémon seront générées ici -->
+    </div>
+
+    <script>
+        // Fonction pour récupérer et afficher les Pokémon
+        function fetchPokemons() {
+            fetch('/api/pokemons') // Faire la requête pour récupérer les Pokémon
+                .then(response => response.json())
+                .then(pokemons => {
+                    const pokedexDiv = document.getElementById('pokedex');
+                    // Vider le conteneur avant de rajouter les nouveaux éléments
+                    pokedexDiv.innerHTML = '';
+
+                    pokemons.forEach(pokemon => {
+                        // Créer un élément de carte
+                        const card = document.createElement('a');
+                        card.href = `detail/${pokemon.name}`; // Utilisation de l'ID dans l'URL
+                        card.classList.add('pokemon-card');
+
+                        // Ajouter le contenu de la carte
+                        card.innerHTML = `
+                            <img src="${pokemon.image_url}" alt="${pokemon.name}">
+                            <div class="pokemon-info">
+                                <strong>#${String(pokemon.id).padStart(3, '0')} ${pokemon.name}</strong>
+                                <div class="pokemon-type">Type: ${pokemon.types}</div>
+                            </div>
+                        `;
+
+                        // Ajouter la carte au conteneur
+                        pokedexDiv.appendChild(card);
+                    });
+                })
+                .catch(error => {
+                    console.error('Erreur lors de la récupération des Pokémon:', error);
+                    alert('Impossible de charger la liste des Pokémon.');
+                });
+        }
+
+        // Appeler la fonction pour récupérer les Pokémon au chargement de la page
+        window.onload = fetchPokemons;
+    </script>
+</body>
+</html>
