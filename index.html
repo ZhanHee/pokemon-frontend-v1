@@ -68,41 +68,31 @@
     </div>
 
     <script>
-        // Fonction pour récupérer et afficher les Pokémon
+        // 获取并展示 Pokémon
         function fetchPokemons() {
-            fetch('/api/pokemons') // Faire la requête pour récupérer les Pokémon
+            fetch('http://localhost:5000/api/pokemons') // 调用后端 API
                 .then(response => response.json())
                 .then(pokemons => {
                     const pokedexDiv = document.getElementById('pokedex');
-                    // Vider le conteneur avant de rajouter les nouveaux éléments
-                    pokedexDiv.innerHTML = '';
+                    pokedexDiv.innerHTML = ''; // 清空容器
 
                     pokemons.forEach(pokemon => {
-                        // Créer un élément de carte
                         const card = document.createElement('a');
-                        card.href = `detail/${pokemon.name}`; // Utilisation de l'ID dans l'URL
+                        card.href = `/detail.html?name=${pokemon.name}`; // 跳转到详情页面
                         card.classList.add('pokemon-card');
-
-                        // Ajouter le contenu de la carte
                         card.innerHTML = `
                             <img src="${pokemon.image_url}" alt="${pokemon.name}">
                             <div class="pokemon-info">
                                 <strong>#${String(pokemon.id).padStart(3, '0')} ${pokemon.name}</strong>
-                                <div class="pokemon-type">Type: ${pokemon.types}</div>
+                                <div>Type: ${pokemon.types.join(', ')}</div>
                             </div>
                         `;
-
-                        // Ajouter la carte au conteneur
                         pokedexDiv.appendChild(card);
                     });
                 })
-                .catch(error => {
-                    console.error('Erreur lors de la récupération des Pokémon:', error);
-                    alert('Impossible de charger la liste des Pokémon.');
-                });
+                .catch(error => console.error('Erreur lors de la récupération des Pokémon:', error));
         }
 
-        // Appeler la fonction pour récupérer les Pokémon au chargement de la page
         window.onload = fetchPokemons;
     </script>
 </body>
