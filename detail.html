@@ -78,7 +78,7 @@
 
         if (pokemonName) {
             // Récupérer les détails du Pokémon depuis l'API
-            fetch(`https://urban-goggles-g4q9qv67779x29wg5-5000.app.github.dev/api/pokemons/${pokemonName}`)
+            fetch(`https://route-service-front-pokemon-ser-xiaoyanyin-dev.apps.rm3.7wse.p1.openshiftapps.com/api/pokemons/${pokemonName}`)
                 .then(response => {
                     if (response.ok) {
                         return response.json(); // Convertir en JSON si la réponse est OK
