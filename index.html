@@ -70,11 +70,11 @@
     <script>
         // 获取并展示 Pokémon
         function fetchPokemons() {
-            fetch('http://localhost:5000/api/pokemons') // 调用后端 API
+            fetch('https://urban-goggles-g4q9qv67779x29wg5-5000.app.github.dev/api/pokemons') // 调用后端 API
                 .then(response => response.json())
                 .then(pokemons => {
                     const pokedexDiv = document.getElementById('pokedex');
-                    pokedexDiv.innerHTML = ''; // 清空容器
+                    pokedexDiv.innerHTML = ''; 
 
                     pokemons.forEach(pokemon => {
                         const card = document.createElement('a');
